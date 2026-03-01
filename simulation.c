@@ -3,6 +3,7 @@
  * Created by asuyer-wpi, asuyer@wpi.edu
  */
 
+#include <curses.h>
 #include <getopt.h>
 #include <ncursesw/ncurses.h>
 // #include <stdio.h>
@@ -41,6 +42,12 @@ void set_timestep(float seconds);
 
 /// Initializes ncurses
 void init_ncurses();
+
+/// Handle the input `key` pressed
+void handle_input(int key);
+
+/// Update the state of the machine
+void update_state();
 
 int main(int argc, char* argv[])
 {
@@ -84,20 +91,29 @@ int main(int argc, char* argv[])
         struct timespec elapsed_time;
         clock_gettime(CLOCK_MONOTONIC, &elapsed_time);
 
-        // Get the number of seconds that has elapsed since the last state transition
-        double seconds_elapsed = (elapsed_time.tv_sec - start_time.tv_sec)
-          + (elapsed_time.tv_nsec - start_time.tv_nsec) / 1e9;
-
-        // Exit loop if `q` key is pressed
+        // Exit loop immediately if `q` key is pressed
         int key = getch();
         if (key == 'q')
         {
             break;
         }
+        else
+        {
+            // For all other keys, defer to helper function
+            handle_input(key);
+        }
 
+        // Get the number of seconds that has elapsed since the last state transition
+        double seconds_elapsed = (elapsed_time.tv_sec - start_time.tv_sec)
+          + (elapsed_time.tv_nsec - start_time.tv_nsec) / 1e9;
+
+        // Do nothing if it is not the next time step
         if (seconds_elapsed < g_timestep) continue;
 
-        printw("One time step has elapsed\n");
+        // Defer update logic to helper function
+        update_state();
+
+        // Update the start time
         clock_gettime(CLOCK_MONOTONIC, &start_time);
     }
 
@@ -129,4 +145,17 @@ void init_ncurses()
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
     set_escdelay(0);
+}
+
+void handle_input(int key) 
+{
+    // TODO: use `case KEY_LEFT`, etc.
+    switch (key)
+    {
+    }
+}
+
+void update_state() 
+{
+    printw("One time step has elapsed\n");
 }
