@@ -1,3 +1,7 @@
+---
+aliases:
+  - FSM-simulation-project
+---
 # Final Project: Planning
 
 ECE 2039 - C01
