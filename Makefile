@@ -5,7 +5,7 @@
 
 # C compiler options
 CC      := gcc
-CFLAGS  := -Wall -g
+CFLAGS  := -Wall -g -DDEBUG
 
 simulation: simulation.c
 	$(CC) $(CFLAGS) simulation.c -o simulation

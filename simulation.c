@@ -6,13 +6,40 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
+
+// Helpful macro for printing debug messages when compiled with -DDEBUG
+#ifdef DEBUG
+#define DEBUG_PRINTF(...)                                  \
+    fprintf(stderr, "DEBUG: %s:%d: ", __FILE__, __LINE__); \
+    fprintf(stderr, __VA_ARGS__)
+#else
+#define DEBUG_PRINTF(...)
+#endif
+
+/// The states of the state machine
+typedef enum
+{
+    READY,
+    MOVE_FORWARD,
+    CHANGE_DIRECTION,
+} state_t;
+
+/// The current state of the machine
+static state_t g_current_state = READY;
+
+/// The timestep of the simulation
+static float g_timestep = 1;
 
 /// Prints the program usage using `program` as the invocation command.
 void print_usage(char const* program);
 
 /// Sets the simulation timestep to `seconds` seconds.
 void set_timestep(float seconds);
+
+/// Initializes ncurses
+void init_ncurses();
 
 int main(int argc, char* argv[])
 {
@@ -42,6 +69,30 @@ int main(int argc, char* argv[])
         }
     }
 
+    // Setup ncurses
+    init_ncurses();
+
+    /// Stores the time of the last state transition.
+    struct timespec start_time;
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
+    g_current_state = READY;
+
+    // Start game loop
+    while (1)
+    {
+        struct timespec elapsed_time;
+        clock_gettime(CLOCK_MONOTONIC, &elapsed_time);
+
+        // Get the number of seconds that has elapsed since the last state transition
+        double seconds_elapsed = (elapsed_time.tv_sec - start_time.tv_sec)
+          + (elapsed_time.tv_nsec - start_time.tv_nsec) / 1e9;
+
+        if (seconds_elapsed < g_timestep) continue;
+
+        printf("One time step has elapsed\n");
+        clock_gettime(CLOCK_MONOTONIC, &start_time);
+    }
+
     return EXIT_SUCCESS;
 }
 
@@ -55,7 +106,11 @@ void print_usage(char const* program)
 
 void set_timestep(float seconds)
 {
-    printf("Set timestep to %f seconds\n", seconds);
+    DEBUG_PRINTF("Setting timestep to %f seconds\n", seconds);
+    g_timestep = seconds;
 }
 
-
+void init_ncurses()
+{
+    DEBUG_PRINTF("Initializing ncurses\n");
+}

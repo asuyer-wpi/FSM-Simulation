@@ -41,10 +41,10 @@ A state machine is a natural model for this program since each state represents 
 **Due**: Wednesday 3/4/26 at midnight.
 
 **Working features**:
-- [ ] Program compiles successfully with `make`
+- [x] Program compiles successfully with `make`
 - [ ] Program successfully creates a window using `ncurses`
 - [ ] A glyph representing the sprite is rendered on screen
-- [ ] Program supports the `-h` / `--help` command line option
+- [x] Program supports the `-h` / `--help` command line option
 - [ ] Global variables exist for sprite position and direction
 - [ ] If `q` key is pressed, program terminates gracefully
 
