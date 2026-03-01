@@ -4,7 +4,8 @@
  */
 
 #include <getopt.h>
-#include <stdio.h>
+#include <ncursesw/ncurses.h>
+// #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
@@ -87,12 +88,20 @@ int main(int argc, char* argv[])
         double seconds_elapsed = (elapsed_time.tv_sec - start_time.tv_sec)
           + (elapsed_time.tv_nsec - start_time.tv_nsec) / 1e9;
 
+        // Exit loop if `q` key is pressed
+        int key = getch();
+        if (key == 'q')
+        {
+            break;
+        }
+
         if (seconds_elapsed < g_timestep) continue;
 
-        printf("One time step has elapsed\n");
+        printw("One time step has elapsed\n");
         clock_gettime(CLOCK_MONOTONIC, &start_time);
     }
 
+    endwin();
     return EXIT_SUCCESS;
 }
 
@@ -113,4 +122,11 @@ void set_timestep(float seconds)
 void init_ncurses()
 {
     DEBUG_PRINTF("Initializing ncurses\n");
+    initscr();
+    cbreak();
+    noecho();
+    scrollok(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
+    keypad(stdscr, TRUE);
+    set_escdelay(0);
 }
