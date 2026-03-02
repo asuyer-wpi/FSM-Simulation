@@ -26,13 +26,35 @@ typedef enum
     READY,
     MOVE_FORWARD,
     CHANGE_DIRECTION,
+    EXIT,
 } state_t;
 
+typedef enum
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+} direction_t;
+
+// ----- Global State ----- //
+
 /// The current state of the machine
-static state_t g_current_state = READY;
+static state_t g_current_state;
+
+/// The next state to transition to
+static state_t g_next_state;
+
+/// The current direction that the sprite is facing
+static direction_t g_current_direction;
+
+/// The next direction for the sprite to face
+static direction_t g_next_direction;
 
 /// The timestep of the simulation
-static float g_timestep = 1;
+static float g_timestep;
+
+// ----- Init functions ----- //
 
 /// Prints the program usage using `program` as the invocation command.
 void print_usage(char const* program);
@@ -43,11 +65,29 @@ void set_timestep(float seconds);
 /// Initializes ncurses
 void init_ncurses();
 
+void init_states();
+
+// ----- Game loop functions ----- //
+
 /// Handle the input `key` pressed
 void handle_input(int key);
 
-/// Update the state of the machine
-void update_state();
+/// Updates the state of the machine
+void update(float delta_time);
+
+/// Renders the updated state to the screen
+void render();
+
+// ----- State functions ----- //
+
+/// Update the position of the sprite to move forward one step in the direction its facing
+void move_forward();
+
+/// Update the direction which the sprite is facing
+void change_direction();
+
+/// Exit the program, uninitializing ncurses in the process;
+void exit_program();
 
 int main(int argc, char* argv[])
 {
@@ -77,49 +117,38 @@ int main(int argc, char* argv[])
         }
     }
 
-    // Setup ncurses
+    // Setup ncurses and states
     init_ncurses();
+    init_states();
 
-    /// Stores the time of the last state transition.
-    struct timespec start_time;
-    clock_gettime(CLOCK_MONOTONIC, &start_time);
-    g_current_state = READY;
+    /// Stores the time of the last iteration
+    struct timespec last_time;
+    clock_gettime(CLOCK_MONOTONIC, &last_time);
 
     // Start game loop
     while (1)
     {
-        struct timespec elapsed_time;
-        clock_gettime(CLOCK_MONOTONIC, &elapsed_time);
+        struct timespec current_time;
+        clock_gettime(CLOCK_MONOTONIC, &current_time);
 
-        // Exit loop immediately if `q` key is pressed
+        // Handle input key
         int key = getch();
-        if (key == 'q')
-        {
-            break;
-        }
-        else
-        {
-            // For all other keys, defer to helper function
-            handle_input(key);
-        }
+        handle_input(key);
 
-        // Get the number of seconds that has elapsed since the last state transition
-        double seconds_elapsed = (elapsed_time.tv_sec - start_time.tv_sec)
-          + (elapsed_time.tv_nsec - start_time.tv_nsec) / 1e9;
+        // Get the number of seconds that has elapsed since the last iteration
+        double seconds_elapsed = (current_time.tv_sec - last_time.tv_sec)
+          + (current_time.tv_nsec - last_time.tv_nsec) / 1e9;
 
-        // Do nothing if it is not the next time step
-        if (seconds_elapsed < g_timestep) continue;
+        update(seconds_elapsed);
+        render();
 
-        // Defer update logic to helper function
-        update_state();
-
-        // Update the start time
-        clock_gettime(CLOCK_MONOTONIC, &start_time);
+        last_time = current_time;
     }
 
-    endwin();
     return EXIT_SUCCESS;
 }
+
+// ----- Init functions ----- //
 
 void print_usage(char const* program)
 {
@@ -147,15 +176,98 @@ void init_ncurses()
     set_escdelay(0);
 }
 
-void handle_input(int key) 
+void init_states()
 {
-    // TODO: use `case KEY_LEFT`, etc.
+    DEBUG_PRINTF("Initializing states\n");
+    g_current_state = READY;
+    g_next_state = READY;
+    g_current_direction = RIGHT;
+    g_next_direction = RIGHT;
+    set_timestep(1);
+}
+
+// ----- Game loop functions ----- //
+
+void handle_input(int key)
+{
     switch (key)
     {
+    case ' ':  // space key
+        g_next_state = MOVE_FORWARD;
+        break;
+    case 'q':
+        g_next_state = EXIT;
+        break;
+    case KEY_LEFT:
+        g_next_state = CHANGE_DIRECTION;
+        g_next_direction = LEFT;
+        break;
+    case KEY_RIGHT:
+        g_next_state = CHANGE_DIRECTION;
+        g_next_direction = RIGHT;
+        break;
+    case KEY_UP:
+        g_next_state = CHANGE_DIRECTION;
+        g_next_direction = UP;
+        break;
+    case KEY_DOWN:
+        g_next_state = CHANGE_DIRECTION;
+        g_next_direction = DOWN;
+        break;
     }
 }
 
-void update_state() 
+void update(float delta_time)
 {
-    printw("One time step has elapsed\n");
+    static float elapsed_time = 0;
+    elapsed_time += delta_time;
+
+    g_current_state = g_next_state;
+    switch (g_current_state)
+    {
+    case READY:
+        if (elapsed_time < g_timestep)
+        {
+            break;
+        }
+        // If elapsed time is greater than the timestep, fall into MOVE_FORWARD state
+    case MOVE_FORWARD:
+        move_forward();
+        elapsed_time = 0;
+        break;
+    case CHANGE_DIRECTION:
+        change_direction();
+        break;
+    case EXIT:
+        exit_program();
+        break;
+    }
+}
+
+void render()
+{
+    // clear();
+    refresh();
+}
+
+// ----- State functions ----- //
+
+void move_forward()
+{
+    printw("Moving forward");
+    g_next_state = READY;
+}
+
+void change_direction()
+{
+    DEBUG_PRINTF("Changing direction to %d\n", g_next_direction);
+    g_current_direction = g_next_direction;
+    g_next_state = READY;
+}
+
+void exit_program()
+{
+    DEBUG_PRINTF("Quitting\n");
+    endwin();
+    exit(EXIT_SUCCESS);
 }
