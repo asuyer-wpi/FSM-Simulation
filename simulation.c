@@ -305,4 +305,23 @@ void draw_sprite()
     mvaddstr(g_current_sprite_state.ypos + 1, g_current_sprite_state.xpos, "/|\\");
     mvaddstr(g_current_sprite_state.ypos + 2, g_current_sprite_state.xpos, " | ");
     mvaddstr(g_current_sprite_state.ypos + 3, g_current_sprite_state.xpos, "/ \\");
+
+    // Draw the direction indicator
+    switch (g_current_sprite_state.direction_facing)
+    {
+    case UP:
+        mvaddstr(g_current_sprite_state.ypos - 2, g_current_sprite_state.xpos + 1, "|");
+        mvaddstr(g_current_sprite_state.ypos - 3, g_current_sprite_state.xpos + 1, "^");
+        break;
+    case DOWN:
+        mvaddstr(g_current_sprite_state.ypos + 5, g_current_sprite_state.xpos + 1, "|");
+        mvaddstr(g_current_sprite_state.ypos + 6, g_current_sprite_state.xpos + 1, "v");
+        break;
+    case LEFT:
+        mvaddstr(g_current_sprite_state.ypos + 1, g_current_sprite_state.xpos - 4, "<-");
+        break;
+    case RIGHT:
+        mvaddstr(g_current_sprite_state.ypos + 1, g_current_sprite_state.xpos + 5, "->");
+        break;
+    }
 }
