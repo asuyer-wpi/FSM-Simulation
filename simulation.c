@@ -27,7 +27,7 @@ typedef enum
     MOVE_FORWARD,
     CHANGE_DIRECTION,
     EXIT,
-} state_t;
+} machine_state_t;
 
 typedef enum
 {
@@ -37,22 +37,29 @@ typedef enum
     RIGHT,
 } direction_t;
 
+typedef struct
+{
+    int xpos;
+    int ypos;
+    direction_t direction_facing;
+} sprite_state_t;
+
 // ----- Global State ----- //
 
 /// The current state of the machine
-static state_t g_current_state;
+static machine_state_t g_current_state;
 
 /// The next state to transition to
-static state_t g_next_state;
-
-/// The current direction that the sprite is facing
-static direction_t g_current_direction;
+static machine_state_t g_next_state;
 
 /// The next direction for the sprite to face
 static direction_t g_next_direction;
 
 /// The timestep of the simulation
-static float g_timestep;
+static float g_timestep = 1;
+
+/// Current state of the sprite
+static sprite_state_t g_current_sprite_state;
 
 // ----- Init functions ----- //
 
@@ -174,6 +181,7 @@ void init_ncurses()
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
     set_escdelay(0);
+    curs_set(0);        // Make the cursor invisible
 }
 
 void init_states()
@@ -181,9 +189,10 @@ void init_states()
     DEBUG_PRINTF("Initializing states\n");
     g_current_state = READY;
     g_next_state = READY;
-    g_current_direction = RIGHT;
     g_next_direction = RIGHT;
-    set_timestep(1);
+    g_current_sprite_state.xpos = 5;
+    g_current_sprite_state.ypos = 5;
+    g_current_sprite_state.direction_facing = RIGHT;
 }
 
 // ----- Game loop functions ----- //
@@ -246,7 +255,8 @@ void update(float delta_time)
 
 void render()
 {
-    // clear();
+    erase();
+    mvaddch(g_current_sprite_state.ypos, g_current_sprite_state.xpos, 'S');
     refresh();
 }
 
@@ -254,14 +264,28 @@ void render()
 
 void move_forward()
 {
-    printw("Moving forward");
+    switch (g_current_sprite_state.direction_facing)
+    {
+    case UP:
+        g_current_sprite_state.ypos -= 1;
+        break;
+    case DOWN:
+        g_current_sprite_state.ypos += 1;
+        break;
+    case LEFT:
+        g_current_sprite_state.xpos -= 2;
+        break;
+    case RIGHT:
+        g_current_sprite_state.xpos += 2;
+        break;
+    }
     g_next_state = READY;
 }
 
 void change_direction()
 {
     DEBUG_PRINTF("Changing direction to %d\n", g_next_direction);
-    g_current_direction = g_next_direction;
+    g_current_sprite_state.direction_facing = g_next_direction;
     g_next_state = READY;
 }
 

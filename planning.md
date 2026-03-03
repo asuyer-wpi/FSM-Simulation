@@ -43,11 +43,11 @@ A state machine is a natural model for this program since each state represents 
 
 **Working features**:
 - [x] Program compiles successfully with `make`
-- [ ] Program successfully creates a window using `ncurses`
-- [ ] A glyph representing the sprite is rendered on screen
+- [x] Program successfully creates a window using `ncurses`
+- [x] A glyph representing the sprite is rendered on screen
 - [x] Program supports the `-h` / `--help` command line option
-- [ ] Global variables exist for sprite position and direction
-- [ ] If `q` key is pressed, program terminates gracefully
+- [x] Global variables exist for sprite position and direction
+- [x] If `q` key is pressed, program terminates gracefully
 
 **Tests**:
 - Compiling with `make` succeeds without errors
@@ -62,10 +62,10 @@ A state machine is a natural model for this program since each state represents 
 **Due**: Friday 3/6/26 at midnight.
 
 **Working features**:
-- [ ] Sprite automatically moves forward on a set time interval
-- [ ] User can cause sprite to move forward with space key
-- [ ] User can change sprite direction with arrow keys
-- [ ] Program supports setting a custom time interval using command line arguments
+- [x] Sprite automatically moves forward on a set time interval
+- [x] User can cause sprite to move forward with space key
+- [x] User can change sprite direction with arrow keys
+- [x] Program supports setting a custom time interval using command line arguments
 - [ ] Finish reflection write-up
 
 **Tests**:
