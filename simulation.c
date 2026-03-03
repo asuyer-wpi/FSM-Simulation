@@ -96,6 +96,9 @@ void change_direction();
 /// Exit the program, uninitializing ncurses in the process;
 void exit_program();
 
+/// Draws the sprite on screen
+void draw_sprite();
+
 int main(int argc, char* argv[])
 {
     // Define allowed options
@@ -181,7 +184,7 @@ void init_ncurses()
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
     set_escdelay(0);
-    curs_set(0);        // Make the cursor invisible
+    curs_set(0);  // Make the cursor invisible
 }
 
 void init_states()
@@ -256,7 +259,7 @@ void update(float delta_time)
 void render()
 {
     erase();
-    mvaddch(g_current_sprite_state.ypos, g_current_sprite_state.xpos, 'S');
+    draw_sprite();
     refresh();
 }
 
@@ -294,4 +297,12 @@ void exit_program()
     DEBUG_PRINTF("Quitting\n");
     endwin();
     exit(EXIT_SUCCESS);
+}
+
+void draw_sprite()
+{
+    mvaddstr(g_current_sprite_state.ypos, g_current_sprite_state.xpos, " O ");
+    mvaddstr(g_current_sprite_state.ypos + 1, g_current_sprite_state.xpos, "/|\\");
+    mvaddstr(g_current_sprite_state.ypos + 2, g_current_sprite_state.xpos, " | ");
+    mvaddstr(g_current_sprite_state.ypos + 3, g_current_sprite_state.xpos, "/ \\");
 }
