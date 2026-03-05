@@ -169,7 +169,10 @@ void print_usage(char const* program)
     printf("Usages:\n\t%s [-h|--help]\n\t%s [-t|--timestep timestep]\n\n", program, program);
     printf("Options:\n");
     printf("\t-h|--help: shows this help message\n");
-    printf("\t-t|--timestep: sets the timestep to `timestep` seconds\n");
+    printf("\t-t|--timestep: sets the timestep to `timestep` seconds\n\n");
+    printf("Use the arrow keys to change the direction of the sprite.\n");
+    printf("Press the space key to move the sprite forward immediately.\n");
+    printf("Press the q key to exit the simulation.\n");
 }
 
 void set_timestep(float seconds)
