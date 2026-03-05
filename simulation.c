@@ -6,13 +6,13 @@
 #include <curses.h>
 #include <getopt.h>
 #include <ncursesw/ncurses.h>
-// #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
 
 // Helpful macro for printing debug messages when compiled with -DDEBUG
 #ifdef DEBUG
+#include <stdio.h>
 #define DEBUG_PRINTF(...)                                  \
     fprintf(stderr, "DEBUG: %s:%d: ", __FILE__, __LINE__); \
     fprintf(stderr, __VA_ARGS__)
