@@ -4,9 +4,15 @@
 # 
 
 # C compiler options
-# Add -DDEBUG to CFLAGS to enable debug messages
 CC      := gcc
-CFLAGS  := -Wall -g -DDEBUG
+CFLAGS  := -Wall -g
+
+# Debug toggle (can be overridden from command line)
+DEBUG_ENABLED ?= 0
+
+ifeq ($(DEBUG_ENABLED),1)
+CFLAGS += -DDEBUG
+endif
 
 simulation: simulation.c
 	$(CC) $(CFLAGS) simulation.c -o simulation -lncurses 
