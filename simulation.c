@@ -29,6 +29,7 @@ typedef enum
     EXIT,
 } machine_state_t;
 
+/// A direction the the sprite can be facing
 typedef enum
 {
     UP,
@@ -37,6 +38,7 @@ typedef enum
     RIGHT,
 } direction_t;
 
+/// Contains information about where the sprite is and which way its facing
 typedef struct
 {
     int xpos;
@@ -72,6 +74,7 @@ void set_timestep(float seconds);
 /// Initializes ncurses
 void init_ncurses();
 
+/// Initializes the machine and sprite states to their starting values
 void init_states();
 
 // ----- Game loop functions ----- //
@@ -79,7 +82,7 @@ void init_states();
 /// Handle the input `key` pressed
 void handle_input(int key);
 
-/// Updates the state of the machine
+/// Updates the state of the sprite and machine
 void update(float delta_time);
 
 /// Renders the updated state to the screen
@@ -138,16 +141,17 @@ int main(int argc, char* argv[])
     // Start game loop
     while (1)
     {
+        // Get the current time
         struct timespec current_time;
         clock_gettime(CLOCK_MONOTONIC, &current_time);
-
-        // Handle input key
-        int key = getch();
-        handle_input(key);
 
         // Get the number of seconds that has elapsed since the last iteration
         double seconds_elapsed = (current_time.tv_sec - last_time.tv_sec)
           + (current_time.tv_nsec - last_time.tv_nsec) / 1e9;
+
+        // Handle input key
+        int key = getch();
+        handle_input(key);
 
         update(seconds_elapsed);
         render();
@@ -231,15 +235,20 @@ void handle_input(int key)
 
 void update(float delta_time)
 {
+    /// Stores the number of seconds since the last state move forward.
     static float elapsed_time = 0;
     elapsed_time += delta_time;
 
+    // Transition to the next state
     g_current_state = g_next_state;
+
+    // Take action based on the current state
     switch (g_current_state)
     {
     case READY:
         if (elapsed_time < g_timestep)
         {
+            // Not enough time has passed, so stay in READY
             break;
         }
         // If elapsed time is greater than the timestep, fall into MOVE_FORWARD state
@@ -258,6 +267,7 @@ void update(float delta_time)
 
 void render()
 {
+    // Clear screen, draw sprite, refresh screen
     erase();
     draw_sprite();
     refresh();
@@ -267,6 +277,8 @@ void render()
 
 void move_forward()
 {
+    DEBUG_PRINTF("Moving forward\n");
+    // Move in the direction that the sprite is facing
     switch (g_current_sprite_state.direction_facing)
     {
     case UP:
@@ -282,6 +294,8 @@ void move_forward()
         g_current_sprite_state.xpos += 2;
         break;
     }
+
+    // Prepare transition to READY state
     g_next_state = READY;
 }
 
@@ -301,6 +315,7 @@ void exit_program()
 
 void draw_sprite()
 {
+    // Draw the sprite character
     mvaddstr(g_current_sprite_state.ypos, g_current_sprite_state.xpos, " O ");
     mvaddstr(g_current_sprite_state.ypos + 1, g_current_sprite_state.xpos, "/|\\");
     mvaddstr(g_current_sprite_state.ypos + 2, g_current_sprite_state.xpos, " | ");
