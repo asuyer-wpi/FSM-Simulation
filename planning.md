@@ -27,11 +27,10 @@ My state machine will have the following states:
 - **Ready**: The sprite is ready to move and is waiting for the next time step or the space key to be pressed 
 - **Move Forward**: Upon transitioning to this state, the sprite will move forward one step in the direction its facing then switch back to the Ready state.
 - **Change Direction**: Upon transitioning to this state, the sprite will change the direction its facing then switch back to the Ready state.
-- **Exit**: Upon transitioning to this state, the program will exit
 
 The state diagram is as shown:
 
-![State machine](State-machine.png)
+![State machine](State-machine-original.png)
 
 A state machine is a natural model for this program since each state represents an *action* that the sprite takes.
 
