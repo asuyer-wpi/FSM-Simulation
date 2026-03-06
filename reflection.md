@@ -17,8 +17,8 @@ The program works exactly as I hoped it would. All keyboard inputs work properly
 
 I am also happy with how the program looks. I fulfilled one of my "extra" goals of making a humanoid looking sprite as opposed to a single character sprite. The rendering cycle works nicely and follows a clear-draw-refresh cycle that is common in game development.
 
-One thing I wish I handled differently was `DEBUG` mode. As I currently have it, you have enable/disable `DEBUG` mode at compile time. If enabled, the program will print log messages to `stderr`, however, this clutters up the screen if `stderr` isn't redirected to a file using `2>` bash syntax. Some possible solutions to this problem are:
-- Write log messages to a file instead of `stderr`
+One thing I wish I handled differently was `DEBUG` mode. As I currently have it, you have to enable/disable `DEBUG` mode at compile time. If enabled, the program will print log messages to `stderr`, however, this clutters up the screen if `stderr` isn't redirected to a file using `2>` bash syntax. Some possible solutions to this problem are:
+- Write debug messages to a file instead of `stderr`
 - Make `DEBUG` mode a runtime option where you specify the log file (`--debug <file>`) instead of a compile time option
 
 ### Final state machine diagram
