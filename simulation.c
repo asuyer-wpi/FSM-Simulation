@@ -3,7 +3,6 @@
  * Created by asuyer-wpi, asuyer@wpi.edu
  */
 
-#include <curses.h>
 #include <getopt.h>
 #include <ncursesw/ncurses.h>
 #include <stdlib.h>

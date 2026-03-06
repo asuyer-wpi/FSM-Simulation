@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.5 Chrome/138.0.7204.251 Electron/37.6.1 Safari/537.36" version="28.2.5">
   <diagram name="Page-1" id="V-_g6ZQ9P29Rx88JZV8e">
-    <mxGraphModel dx="2062" dy="886" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="1" shadow="0">
+    <mxGraphModel dx="1568" dy="524" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -10,7 +10,7 @@
         <mxCell id="Q5k33qE0RkeNoQeKKiib-7" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=open;endFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="Q5k33qE0RkeNoQeKKiib-1" target="Q5k33qE0RkeNoQeKKiib-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Q5k33qE0RkeNoQeKKiib-8" value="1 second elapsed /&lt;div&gt;space key key pressed&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;rotation=-15;" parent="Q5k33qE0RkeNoQeKKiib-7" vertex="1" connectable="0">
+        <mxCell id="Q5k33qE0RkeNoQeKKiib-8" value="\(\ge 1\) second elapsed /&lt;div&gt;space key key pressed&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;rotation=-15;" parent="Q5k33qE0RkeNoQeKKiib-7" vertex="1" connectable="0">
           <mxGeometry x="-0.0594" y="-1" relative="1" as="geometry">
             <mxPoint x="5" y="-35" as="offset" />
           </mxGeometry>
@@ -75,7 +75,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="fl93PvZhcVZgzdjLa0DD-4" value="&amp;lt; 1 second&lt;div&gt;elapsed&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" connectable="0" parent="fl93PvZhcVZgzdjLa0DD-3">
+        <mxCell id="fl93PvZhcVZgzdjLa0DD-4" value="\(\lt\) 1 second&lt;div&gt;elapsed&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" connectable="0" parent="fl93PvZhcVZgzdjLa0DD-3">
           <mxGeometry x="0.1598" y="1" relative="1" as="geometry">
             <mxPoint x="10" y="-21" as="offset" />
           </mxGeometry>
